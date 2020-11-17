@@ -9,20 +9,26 @@ export class LoginComponent implements OnInit {
 
   login: {
     email: string,
-    password: string
+    password: string,
+    hidePassword: boolean,
   } = {
       email: '',
-      password: ''
+      password: '',
+      hidePassword: true,
     };
 
   signup: {
     email: string,
     password: string,
+    hidePassword: boolean,
     confirmPassword: string
+    hideConfirm: boolean,
   } = {
       email: '',
       password: '',
-      confirmPassword: ''
+      hidePassword: true,
+      confirmPassword: '',
+      hideConfirm: true,
     };
 
   constructor() { }

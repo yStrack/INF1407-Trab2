@@ -1,17 +1,18 @@
 <div class="h-max w-max flex-row pt-3 px-5">
     <div class="flex-1"></div>
     <mat-card class="card center-vertical">
-        <mat-card-header>
-            <mat-card-title>Log in</mat-card-title>
-        </mat-card-header>
+        <h2 class="center mb-3">Log in</h2>
         <mat-card-content>
-            <mat-form-field class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Email</mat-label>
                 <input matInput type="text" [(ngModel)]="login.email">
             </mat-form-field>
-            <mat-form-field class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput type="text" [(ngModel)]="login.password">
+                <input matInput [type]="login.hidePassword ? 'password' : 'text'" [(ngModel)]="login.password">
+                <button mat-icon-button matSuffix (click)="login.hidePassword = !login.hidePassword">
+                    <mat-icon>{{login.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
             </mat-form-field>
         </mat-card-content>
 
@@ -21,21 +22,25 @@
     </mat-card>
     <div class="flex-1"></div>
     <mat-card class="card center-vertical">
-        <mat-card-header>
-            <mat-card-title>Sign up</mat-card-title>
-        </mat-card-header>
+        <h2 class="center mb-3">Sign up</h2>
         <mat-card-content>
-            <mat-form-field class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Email</mat-label>
                 <input matInput type="text" [(ngModel)]="signup.email">
             </mat-form-field>
-            <mat-form-field class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput type="text" [(ngModel)]="signup.password">
+                <input matInput [type]="signup.hidePassword ? 'password' : 'text'" [(ngModel)]="signup.password">
+                <button mat-icon-button matSuffix (click)="signup.hidePassword = !signup.hidePassword">
+                    <mat-icon>{{signup.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
             </mat-form-field>
-            <mat-form-field class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Confirm Password</mat-label>
-                <input matInput type="text" [(ngModel)]="signup.confirmPassword">
+                <input matInput [type]="signup.hideConfirm ? 'password' : 'text'" [(ngModel)]="signup.confirmPassword">
+                <button mat-icon-button matSuffix (click)="signup.hideConfirm = !signup.hideConfirm">
+                    <mat-icon>{{signup.hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
             </mat-form-field>
         </mat-card-content>
 
