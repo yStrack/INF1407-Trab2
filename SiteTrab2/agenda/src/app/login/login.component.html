@@ -1,1 +1,45 @@
-<mat-card>Simple card</mat-card>
+<div class="h-max w-max flex-row pt-3 px-5">
+    <mat-card class="card mx-5 center-vertical">
+        <mat-card-header>
+            <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field class="w-100">
+                <mat-label>Email</mat-label>
+                <input matInput type="text" [(ngModel)]="login.email">
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>Senha</mat-label>
+                <input matInput type="text" [(ngModel)]="login.password">
+            </mat-form-field>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button class="w-100 mb-2" mat-raised-button color="primary">LOG IN</button>
+        </mat-card-actions>
+    </mat-card>
+    <div class="flex-1"></div>
+    <mat-card class="card mx-5 center-vertical">
+        <mat-card-header>
+            <mat-card-title>Sign up</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field class="w-100">
+                <mat-label>Email</mat-label>
+                <input matInput type="text" [(ngModel)]="signup.email">
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>Senha</mat-label>
+                <input matInput type="text" [(ngModel)]="signup.password">
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>Confirmar Senha</mat-label>
+                <input matInput type="text" [(ngModel)]="signup.confirmPassword">
+            </mat-form-field>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button class="w-100 mb-2" mat-raised-button color="primary">SIGN UP</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

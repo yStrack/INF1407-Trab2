@@ -1,4 +1,111 @@
-/* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-image: linear-gradient(to bottom right, #668cff, #ccd9ff);
+}
+
+.center-vertical {
+    margin-top:auto;
+    margin-bottom:auto;
+}
+.center {
+    margin:auto;
+    text-align: center;
+}
+
+.flex-row {
+    flex-direction: row;
+    display: flex;
+}
+.flex-column {
+    flex-direction: column;
+    display: flex;
+}
+
+@mixin flex($grow) {
+    flex-grow: $grow;
+    display: flex;
+}
+@each $v in (0,1,2,3) {
+    .flex-#{$v} { @include flex($v);}
+}
+
+.w-100 { width: 100% !important; }
+.w-max { width: -webkit-fill-available !important; };
+.h-100 { height: 100% !important; }
+.h-max { height: -webkit-fill-available !important; };
+
+/* Espaçamento 
+ *  
+ * Aqui cria estilos de espaçamento usando padding e margin
+ * m = margin
+ * p = padding
+ *
+ * l = left
+ * r = right
+ * t = top
+ * b = bottom
+ */
+@mixin space-l($type, $value) { 
+    @if $type == p { padding-left: $value !important; }
+    @else if $type == m { margin-left: $value !important; }
+    @else { @error "Unknown type #{$type}."; }
+}
+@mixin space-r($type, $value) { 
+    @if $type == p { padding-right: $value !important; }
+    @else if $type == m { margin-right: $value !important; }
+    @else { @error "Unknown type #{$type}."; }
+}
+@mixin space-t($type, $value) { 
+    @if $type == p { padding-top: $value !important; }
+    @else if $type == m { margin-top: $value !important;  }
+    @else { @error "Unknown type #{$type}."; }
+}
+@mixin space-b($type, $value) { 
+    @if $type == p { padding-bottom: $value !important;  }
+    @else if $type == m { margin-bottom: $value !important;  }
+    @else { @error "Unknown type #{$type}."; }
+}
+
+@mixin space-y($type, $value) {
+    @include space-t($type, $value);
+    @include space-b($type, $value);
+}
+@mixin space-x($type, $value) {
+    @include space-l($type, $value);
+    @include space-r($type, $value);
+}
+@mixin space-all($type, $value) {
+    @include space-y($type, $value);
+    @include space-x($type, $value);
+}
+
+// Valores usados no espaçamento
+$values: (
+    0: 0,
+    1: 4px,
+    2: 8px,
+    3: 16px,
+    4: 32px,
+    5: 64px,
+);
+$space-types: (
+    p,
+    m,
+);
+@each $type in $space-types {
+    @each $value, $size in $values {
+        .#{$type}l-#{$value} { @include space-l($type, $size);}
+        .#{$type}r-#{$value} { @include space-r($type, $size);}
+        .#{$type}t-#{$value} { @include space-t($type, $size);}
+        .#{$type}b-#{$value} { @include space-b($type, $size);}
+
+        .#{$type}x-#{$value} { @include space-x($type, $size);}
+        .#{$type}y-#{$value} { @include space-y($type, $size);}
+
+        .#{$type}-#{$value} { @include space-all($type, $size);}
+    }  
+}
+/* Fim do Espaçamento */
