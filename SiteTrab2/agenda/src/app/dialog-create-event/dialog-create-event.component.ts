@@ -1,6 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+interface Event {
+  title: string;
+  start: string;
+  end: string;
+  allDay: boolean;
+}
 @Component({
   selector: 'app-dialog-create-event',
   templateUrl: './dialog-create-event.component.html',
@@ -8,26 +14,28 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class DialogCreateEventComponent implements OnInit {
 
-  newEvent: {
-    title: string,
-    start: string,
-    end: string,
-    allDay: boolean,
-  } = {
-      title: '',
-      start: '',
-      end: '',
-      allDay: true
-    };
+  dialogTitle = 'Criar Evento';
+
+  newEvent: Event = {
+    title: '',
+    start: '',
+    end: '',
+    allDay: true
+  };
 
   constructor(
     public dialogRef: MatDialogRef<DialogCreateEventComponent>,
-    @Inject(MAT_DIALOG_DATA) public date: any
+    @Inject(MAT_DIALOG_DATA) public event: Event
   ) { }
 
   ngOnInit(): void {
-    this.newEvent.start = this.date;
-    // console.log(this.date);
+    this.newEvent.title = this.event.title;
+    this.newEvent.start = this.event.start;
+    this.newEvent.end = this.event.end;
+    if (this.event.title !== undefined) {
+      this.dialogTitle = 'Editar Evento';
+    }
+    // console.log(this.newEvent);
   }
 
   close(): void {
