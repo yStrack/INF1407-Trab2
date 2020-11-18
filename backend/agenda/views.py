@@ -6,8 +6,16 @@ from django.contrib.auth.models import User
 
 class UserCreate(APIView):
     """ 
-    Creates the user. 
+    Requisição POST para a criação do usuário.
     """
-
     def post(self, request, format='json'):
-        return Response('hello')
+        serializer = UserSerializer(data=request.data)
+        
+        # Em caso de sucesso
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        # Em caso de falhas
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
