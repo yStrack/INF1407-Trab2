@@ -5,7 +5,9 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background-image: linear-gradient(to bottom right, #668cff, #ccd9ff);
 }
-
+.fc-toolbar {
+    text-transform: capitalize;
+}
 .center-vertical {
     margin-top:auto;
     margin-bottom:auto;
