@@ -11,11 +11,13 @@ export class DialogCreateEventComponent implements OnInit {
   newEvent: {
     title: string,
     start: string,
-    end: string;
+    end: string,
+    allDay: boolean,
   } = {
       title: '',
       start: '',
-      end: ''
+      end: '',
+      allDay: true
     };
 
   constructor(
@@ -25,6 +27,7 @@ export class DialogCreateEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.newEvent.start = this.date;
+    // console.log(this.date);
   }
 
   close(): void {

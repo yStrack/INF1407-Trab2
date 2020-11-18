@@ -21,12 +21,14 @@ export class HomeComponent implements OnInit {
   };
 
   handleDateClick(arg: any): void {
-    // alert('date click! ' + arg.dateStr);
-    const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: arg.dateStr });
+    // console.log('date click! ', arg);
+    const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: arg.date });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      this.calendarComponent.getApi().addEvent(result);
+      // console.log(result);
+      if (result !== undefined) {
+        this.calendarComponent.getApi().addEvent(result);
+      }
     });
   }
 
