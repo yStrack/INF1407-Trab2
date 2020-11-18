@@ -46,9 +46,13 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // console.log(result);
       if (result !== undefined) {
-        arg.event.setProp('title', result.title);
-        arg.event.setStart(result.start);
-        arg.event.setEnd(result.end);
+        if (result.delete) {
+          arg.event.remove();
+        } else {
+          arg.event.setProp('title', result.title);
+          arg.event.setStart(result.start);
+          arg.event.setEnd(result.end);
+        }
       }
     });
   }

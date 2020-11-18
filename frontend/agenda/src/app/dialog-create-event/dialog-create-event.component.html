@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ dialogTitle }}</h1>
+<h1 mat-dialog-title>{{ editing ? 'Editar' : 'Criar' }} Evento</h1>
 <div mat-dialog-content>
     <mat-form-field class="w-100" appearance="outline">
         <mat-label>Titulo</mat-label>
@@ -20,7 +20,8 @@
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="close()">Cancelar</button>
+    <button mat-raised-button (click)="close()">Cancelar</button>
+    <button *ngIf="editing" [mat-dialog-close]="{ delete: true }" mat-raised-button color="warn">Deletar</button>
     <div class="flex-1"></div>
-    <button mat-button [mat-dialog-close]="newEvent" cdkFocusInitial>Ok</button>
+    <button [mat-dialog-close]="newEvent" mat-raised-button color="primary">Ok</button>
 </div>

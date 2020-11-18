@@ -14,7 +14,7 @@ interface Event {
 })
 export class DialogCreateEventComponent implements OnInit {
 
-  dialogTitle = 'Criar Evento';
+  editing = false;
 
   newEvent: Event = {
     title: '',
@@ -32,9 +32,7 @@ export class DialogCreateEventComponent implements OnInit {
     this.newEvent.title = this.event.title;
     this.newEvent.start = this.event.start;
     this.newEvent.end = this.event.end;
-    if (this.event.title !== undefined) {
-      this.dialogTitle = 'Editar Evento';
-    }
+    this.editing = this.event.title !== undefined;
     // console.log(this.newEvent);
   }
 
