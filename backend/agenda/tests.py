@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 class AccountsTest(APITestCase):
     def setUp(self):
@@ -23,6 +24,7 @@ class AccountsTest(APITestCase):
         }
 
         response = self.client.post(self.create_url , data, format='json')
+        
         # Garantindo que tem 2 users no BD
         self.assertEqual(User.objects.count(), 2)
         # Response devolve http 201
@@ -30,6 +32,9 @@ class AccountsTest(APITestCase):
         # Garantindo que devolve o email correto e a senha não é enviada na response
         self.assertEqual(response.data['email'], data['email'])
         self.assertFalse('password' in response.data)
+        # Após registro, token é retornado
+        token = Token.objects.get(user=user)
+        self.assertEqual(response.data['token'], token.key)
 
     '''
     Testes com password
