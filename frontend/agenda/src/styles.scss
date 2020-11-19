@@ -30,6 +30,22 @@ body {
     overflow: auto;
 }
 
+$messagesTypes: (
+    warn: #FFBB33,
+    danger: #FF3547,
+    success: #00C851,
+    default: #33B5E5,
+);
+@each $type, $color in $messagesTypes {
+    .#{$type} {
+        background-color: $color;
+        color: white;
+        .mat-simple-snackbar-action  {
+            color: darken($color: $color, $amount: 15%);
+        }
+    }
+}
+
 @mixin flex($grow) {
     flex-grow: $grow;
     display: flex;

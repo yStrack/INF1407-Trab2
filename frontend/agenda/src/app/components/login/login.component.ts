@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login, Register } from 'src/app/interfaces/auth';
 import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private message: MessageService,
   ) {
     // redirect to home if already logged in
     if (this.authService.currentUserValue) {
@@ -45,6 +47,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const p = this.signUp.get('password');
+    if (p) {
+      p.valueChanges.subscribe(val => {
+        this.passwordMatchValidator(this.signUp);
+      });
+    }
     const c = this.signUp.get('confirmPassword');
     if (c) {
       c.valueChanges.subscribe(val => {
@@ -58,6 +66,8 @@ export class LoginComponent implements OnInit {
     const password = g.get('password');
     if (password !== null && confirm !== null && password.value !== confirm.value && confirm.errors === null) {
       confirm.setErrors({ equals: true });
+    } else {
+      confirm?.setErrors(null);
     }
   }
 
@@ -87,7 +97,12 @@ export class LoginComponent implements OnInit {
 
       this.authService.register(newUser).subscribe(res => {
         console.log('Sucesso', res);
+        this.message.show('Usuário criado com sucesso', 'fechar', 'success');
+      }, error => {
+        this.message.show('Erro ao tentar cadastrar', 'fechar', 'danger');
       });
+    } else {
+      this.message.show('Conserte os erros', 'fechar', 'warn');
     }
   }
 
@@ -102,7 +117,11 @@ export class LoginComponent implements OnInit {
       this.authService.login(userLogged).subscribe(res => {
         console.log('Sucesso', res);
         this.router.navigate(['/agenda']);
+      }, error => {
+        this.message.show('Erro ao tentar logar', 'fechar', 'danger');
       });
+    } else {
+      this.message.show('Conserte os erros', 'fechar', 'warn');
     }
   }
 

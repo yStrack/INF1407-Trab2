@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Calendar, CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { EventService } from 'src/app/services/event.service';
+import { MessageService } from 'src/app/services/message.service';
 import { DialogCreateEventComponent } from '../dialog-create-event/dialog-create-event.component';
 
 @Component({
@@ -33,6 +34,8 @@ export class HomeComponent implements OnInit {
       if (newEvent !== undefined) {
         this.eventService.createEvent({ title: newEvent.title, beginDate: newEvent.start, endDate: newEvent.end }).subscribe(e => {
           this.calendarComponent.getApi().addEvent(newEvent);
+        }, error => {
+          this.message.show('Erro ao tentar criar evento', 'fechar', 'danger');
         });
       }
     });
@@ -65,6 +68,7 @@ export class HomeComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private eventService: EventService,
+    private message: MessageService,
   ) {
   }
 

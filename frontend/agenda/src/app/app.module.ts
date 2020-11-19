@@ -19,6 +19,7 @@ import { HomeComponent } from './components/home/home.component';
 import { DialogCreateEventComponent } from './components/dialog-create-event/dialog-create-event.component';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -52,6 +53,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
 
     MatCardModule,
+    MatSnackBarModule,
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
