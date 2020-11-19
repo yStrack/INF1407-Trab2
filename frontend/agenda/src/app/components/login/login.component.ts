@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
-  });
+  }, passwordMatchValidator);
 
   hide: {
     hidePassword: boolean,
@@ -39,16 +39,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  passwordMatchValidator(g: FormGroup): ValidationErrors | null {
-    const confirm = g.get('confirmPassword');
-    const password = g.get('password');
-    if (password !== null && confirm !== null) {
-      return password.value === confirm.value
-        ? null : { equals: true };
-    }
-    return null;
-  }
-
   getErrorMessage(formControlName: string): string {
     const form = this.signUp.controls[formControlName];
     if (form.hasError('required')) {
@@ -58,10 +48,19 @@ export class LoginComponent implements OnInit {
     } else if (form.hasError('minlength')) {
       return 'Senha tem que ter no mínimo 8 caracteres';
     } else if (form.hasError('equals')) {
-      return 'Senha tem que ser igual';
+      return 'Precisa ser igual a senha original';
     } else {
       return '';
     }
   }
 
+}
+
+function passwordMatchValidator(g: FormGroup) {
+  const confirm = g.get('confirmPassword');
+  const password = g.get('password');
+  if (password !== null && confirm !== null && password.value !== confirm.value && confirm.errors === null) {
+    confirm.setErrors({ equals: true });
+  }
+  return null;
 }
