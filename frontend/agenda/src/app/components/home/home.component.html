@@ -1,4 +1,8 @@
-<div class="h-max w-max py-2 px-5 flex-row">
+<div class="h-max w-max py-2 px-5 flex-column">
+    <div class="flex-row">
+        <div class="flex-1"></div>
+        <button mat-button color="primary" (click)="logout()">Sair</button>
+    </div>
     <mat-card class="flex-1">
         <mat-card-content class="h-100">
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>

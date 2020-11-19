@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Calendar, CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { AppComponent } from 'src/app/app.component';
 import { EventService } from 'src/app/services/event.service';
 import { MessageService } from 'src/app/services/message.service';
 import { DialogCreateEventComponent } from '../dialog-create-event/dialog-create-event.component';
@@ -69,9 +70,14 @@ export class HomeComponent implements OnInit {
     public dialog: MatDialog,
     private eventService: EventService,
     private message: MessageService,
+    private app: AppComponent,
   ) {
   }
 
   ngOnInit(): void {
+  }
+
+  logout(): void {
+    this.app.logout();
   }
 }
