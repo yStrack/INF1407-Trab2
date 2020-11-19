@@ -13,8 +13,17 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     /**
-     * Creates a new user with data provided.
+     * Login with the provided user.
      *
+     */
+    public login(user: Login): Observable<User> {
+        return this.http.post<User>(
+            `${BASE_URL}/users/login/`, user
+        );
+    }
+
+    /**
+     * Creates a new user with data provided.
      */
     public register(user: Register): Observable<User> {
         return this.http.post<User>(

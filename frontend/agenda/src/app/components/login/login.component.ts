@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Register } from 'src/app/interfaces/auth';
+import { Login, Register } from 'src/app/interfaces/auth';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,15 +10,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  login: {
-    username: string,
-    password: string,
-    hidePassword: boolean,
-  } = {
-      username: '',
-      password: '',
-      hidePassword: true,
-    };
+  userLogin = new FormGroup({
+    username: new FormControl('', [Validators.required, Validators.maxLength(32)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  });
 
 
   signUp = new FormGroup({
@@ -29,11 +24,13 @@ export class LoginComponent implements OnInit {
   });
 
   hide: {
-    hidePassword: boolean,
-    hideConfirm: boolean,
+    login: boolean,
+    password: boolean,
+    confirm: boolean,
   } = {
-      hidePassword: true,
-      hideConfirm: true,
+      login: true,
+      password: true,
+      confirm: true,
     };
 
   constructor(
@@ -57,8 +54,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  getErrorMessage(formControlName: string): string {
-    const form = this.signUp.controls[formControlName];
+  getErrorMessage(formGroup: FormGroup, formControlName: string): string {
+    const form = formGroup.controls[formControlName];
     if (form.hasError('required')) {
       return 'Campo obrigatório';
     } else if (form.hasError('email')) {
@@ -73,7 +70,7 @@ export class LoginComponent implements OnInit {
   }
 
   register(user: FormGroup): void {
-    console.log(user, user.value);
+    // console.log(user, user.value);
     if (user.valid) {
       const newUser: Register = {
         username: user.value.username,
@@ -85,7 +82,20 @@ export class LoginComponent implements OnInit {
         console.log('Sucesso', res);
       });
     }
+  }
 
+  login(user: FormGroup): void {
+    // console.log(user, user.value);
+    if (user.valid) {
+      const userLogged: Login = {
+        username: user.value.username,
+        password: user.value.password,
+      };
+
+      this.authService.login(userLogged).subscribe(res => {
+        console.log('Sucesso', res);
+      });
+    }
   }
 
 }
