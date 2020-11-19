@@ -18,7 +18,7 @@ export class AuthService {
      */
     public register(user: Register): Observable<User> {
         return this.http.post<User>(
-            `${BASE_URL}/users/register`, user
+            `${BASE_URL}/users/register/`, user
         );
     }
 }
