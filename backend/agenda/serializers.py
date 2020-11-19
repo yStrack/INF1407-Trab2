@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
+from agenda.models import Event
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=32, validators=[UniqueValidator(queryset=User.objects.all())])
@@ -19,3 +20,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
+
+class EventSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        event = Event.objects.create(title=validated_data['title'], beginDate=validated_data['beginDate'], endDate=validated_data['endDate'], owner=validated_data['owner'])
+        return event
+
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'beginDate', 'endDate', 'owner')

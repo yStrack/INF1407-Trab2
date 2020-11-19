@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from agenda.serializers import UserSerializer
+from agenda.serializers import UserSerializer, EventSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class UserCreate(APIView):
     """ 
@@ -21,6 +23,33 @@ class UserCreate(APIView):
                 json = serializer.data
                 json['token'] = token.key
                 return Response(json, status=status.HTTP_201_CREATED)
+        
+        # Em caso de falhas
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EventCreate(APIView):
+    '''
+    Requisição POST para a criação de um evento.
+    '''
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format='json'):
+
+        user_id = Token.objects.get(user=request.user).user_id
+        data = {
+            'title': request.data['title'],
+            'beginDate': request.data['beginDate'],
+            'endDate': request.data['endDate'],
+            'owner': user_id
+        }
+
+        serializer = EventSerializer(data=data)
+
+        if serializer.is_valid():
+            event = serializer.save()
+            if event:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         # Em caso de falhas
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
