@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Register } from 'src/app/interfaces/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +36,9 @@ export class LoginComponent implements OnInit {
       hideConfirm: true,
     };
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -54,9 +58,25 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  register(user: FormGroup): void {
+    console.log(user, user.value);
+    if (user.valid) {
+      const newUser: Register = {
+        username: user.value.username,
+        email: user.value.email,
+        password: user.value.password,
+      };
+
+      this.authService.register(newUser).subscribe(res => {
+        console.log('Sucesso', res);
+      });
+    }
+
+  }
+
 }
 
-function passwordMatchValidator(g: FormGroup) {
+function passwordMatchValidator(g: FormGroup): null {
   const confirm = g.get('confirmPassword');
   const password = g.get('password');
   if (password !== null && confirm !== null && password.value !== confirm.value && confirm.errors === null) {

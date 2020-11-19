@@ -23,7 +23,7 @@
     <div class="flex-1"></div>
     <mat-card class="card center-vertical">
         <h2 class="center mb-3">Cadastre-se</h2>
-        <form [formGroup]="signUp">
+        <form [formGroup]="signUp" (ngSubmit)="register(signUp)">
             <mat-card-content>
                 <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Username</mat-label>
@@ -60,7 +60,8 @@
             </mat-card-content>
 
             <mat-card-actions>
-                <button class="w-100 mb-2" mat-raised-button color="primary">CADASTRAR</button>
+                <button class="w-100 mb-2" mat-raised-button color="primary" [disabled]="!signUp.valid"
+                    submit>CADASTRAR</button>
             </mat-card-actions>
         </form>
     </mat-card>

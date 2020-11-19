@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../app.constants';
+import { Register, User, Login } from '../interfaces/auth';
 
 @Injectable({
     providedIn: 'root'

@@ -1,15 +1,15 @@
-interface Register {
+export interface Register {
     username: string;
     email: string;
     password: string;
 }
 
-interface Login {
+export interface Login {
     username: string;
     password: string;
 }
 
-interface User {
+export interface User {
     id: string;
     username: string;
     email: string;
