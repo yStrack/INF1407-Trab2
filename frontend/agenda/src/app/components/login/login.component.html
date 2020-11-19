@@ -40,7 +40,7 @@
                     <mat-label>Senha</mat-label>
                     <input matInput [type]="hide.hidePassword ? 'password' : 'text'" formControlName="password"
                         required>
-                    <button mat-icon-button matSuffix (click)="hide.hidePassword = !hide.hidePassword">
+                    <button mat-icon-button matSuffix (click)="hide.hidePassword = !hide.hidePassword" type="button">
                         <mat-icon>{{hide.hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="signUp.controls['password']?.invalid">{{ getErrorMessage('password') }}
@@ -50,7 +50,7 @@
                     <mat-label>Confirmar Senha</mat-label>
                     <input matInput [type]="hide.hideConfirm ? 'password' : 'text'" formControlName="confirmPassword"
                         required>
-                    <button mat-icon-button matSuffix (click)="hide.hideConfirm = !hide.hideConfirm">
+                    <button mat-icon-button matSuffix (click)="hide.hideConfirm = !hide.hideConfirm" type="button">
                         <mat-icon>{{hide.hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="signUp.controls['confirmPassword']?.invalid">
@@ -61,7 +61,7 @@
 
             <mat-card-actions>
                 <button class="w-100 mb-2" mat-raised-button color="primary" [disabled]="!signUp.valid"
-                    submit>CADASTRAR</button>
+                    type="submit">CADASTRAR</button>
             </mat-card-actions>
         </form>
     </mat-card>

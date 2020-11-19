@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
-  }, passwordMatchValidator);
+  });
 
   hide: {
     hidePassword: boolean,
@@ -41,6 +41,20 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const c = this.signUp.get('confirmPassword');
+    if (c) {
+      c.valueChanges.subscribe(val => {
+        this.passwordMatchValidator(this.signUp);
+      });
+    }
+  }
+
+  passwordMatchValidator(g: FormGroup): void {
+    const confirm = g.get('confirmPassword');
+    const password = g.get('password');
+    if (password !== null && confirm !== null && password.value !== confirm.value && confirm.errors === null) {
+      confirm.setErrors({ equals: true });
+    }
   }
 
   getErrorMessage(formControlName: string): string {
@@ -74,13 +88,4 @@ export class LoginComponent implements OnInit {
 
   }
 
-}
-
-function passwordMatchValidator(g: FormGroup): null {
-  const confirm = g.get('confirmPassword');
-  const password = g.get('password');
-  if (password !== null && confirm !== null && password.value !== confirm.value && confirm.errors === null) {
-    confirm.setErrors({ equals: true });
-  }
-  return null;
 }
