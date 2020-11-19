@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Calendar, CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { EventService } from 'src/app/services/event.service';
 import { DialogCreateEventComponent } from '../dialog-create-event/dialog-create-event.component';
 
 @Component({
@@ -25,10 +26,12 @@ export class HomeComponent implements OnInit {
     // console.log('date click! ', arg);
     const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: { start: arg.date } });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(newEvent => {
       // console.log(result);
-      if (result !== undefined) {
-        this.calendarComponent.getApi().addEvent(result);
+      if (newEvent !== undefined) {
+        this.eventService.createEvent({ title: newEvent.title, beginDate: newEvent.start, endDate: newEvent.end }).subscribe(e => {
+          this.calendarComponent.getApi().addEvent(newEvent);
+        });
       }
     });
   }
@@ -58,7 +61,8 @@ export class HomeComponent implements OnInit {
   }
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private eventService: EventService,
   ) {
   }
 
