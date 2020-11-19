@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Login, Register } from 'src/app/interfaces/auth';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -35,7 +36,13 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-  ) { }
+    private router: Router,
+  ) {
+    // redirect to home if already logged in
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/agenda']);
+    }
+  }
 
   ngOnInit(): void {
     const c = this.signUp.get('confirmPassword');
@@ -94,6 +101,7 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(userLogged).subscribe(res => {
         console.log('Sucesso', res);
+        this.router.navigate(['/agenda']);
       });
     }
   }
