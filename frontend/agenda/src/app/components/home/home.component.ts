@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
     buttonText: {
       today: 'Hoje',
     },
+    height: '100%',
+    fixedWeekCount: false,
     locale: 'pt-br',
     initialView: 'dayGridMonth',
     dateClick: this.handleDateClick.bind(this),

@@ -26,6 +26,10 @@ body {
     display: flex;
 }
 
+.scroll {
+    overflow: auto;
+}
+
 @mixin flex($grow) {
     flex-grow: $grow;
     display: flex;
