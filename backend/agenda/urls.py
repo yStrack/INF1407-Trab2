@@ -7,5 +7,6 @@ urlpatterns = [
     path('register/', views.UserCreate.as_view(), name='user-create'),
     path('login/', authviews.obtain_auth_token),
     path('register-event/', views.EventCreate.as_view(), name='event-create'),
-    path('events/', views.EventList.as_view(), name='event-list')
+    path('events/', views.EventList.as_view(), name='event-list'),
+    path('events/<int:id>/', views.EventDelete.as_view(), name='event-update-delete'),
 ]

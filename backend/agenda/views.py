@@ -67,3 +67,32 @@ class EventList(APIView):
 
         serializer = EventSerializer(Event.objects.filter(owner=user_id), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class EventDelete(APIView):
+    '''
+    Requisição GET para a retornar todos eventos de um User.
+    '''
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get_object(self, id):
+        try:
+            return Event.objects.filter(id=id)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def put(self, request, id, format=None):
+        events = self.get_object(id)
+        user_id = Token.objects.get(user=request.user).user_id
+        filter_event = events.filter(owner=user_id)
+        serializer = EventSerializer(filter_event, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id, format='json'):
+        events = self.get_object(id)
+        user_id = Token.objects.get(user=request.user).user_id
+        filter_event = events.filter(owner=user_id)
+        filter_event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
