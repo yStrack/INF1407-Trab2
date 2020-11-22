@@ -38,10 +38,11 @@ class EventCreate(APIView):
     def post(self, request, format='json'):
 
         user_id = Token.objects.get(user=request.user).user_id
+        endDate = request.data.get("endDate", request.data["beginDate"])
         data = {
             'title': request.data['title'],
             'beginDate': request.data['beginDate'],
-            'endDate': request.data['endDate'],
+            'endDate': endDate,
             'owner': user_id
         }
 
@@ -65,8 +66,4 @@ class EventList(APIView):
         user_id = Token.objects.get(user=request.user).user_id
 
         serializer = EventSerializer(Event.objects.filter(owner=user_id), many=True)
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        # Em caso de falhas
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
