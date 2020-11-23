@@ -62,10 +62,11 @@ class EventList(APIView):
     '''
     Requisição GET para a retornar todos eventos de um User.
     '''
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     def get(self, request, format='json'):
-        user_id = Token.objects.get(user=request.user).user_id
+        # user_id = Token.objects.get(user=request.user).user_id
+        user_id = Token.objects.get(key=request.auth.key).user_id
 
         serializer = EventSerializer(Event.objects.filter(owner=user_id), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
