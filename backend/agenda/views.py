@@ -110,7 +110,8 @@ class EventDelete(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, format='json'):
-        user_id = Token.objects.get(user=request.user).user_id
+        # user_id = Token.objects.get(user=request.user).user_id
+        user_id = Token.objects.get(key=request.auth.key).user_id
         event = self.get_object(id, user_id)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
