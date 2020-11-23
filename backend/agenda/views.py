@@ -38,7 +38,8 @@ class EventCreate(APIView):
 
     def post(self, request, format='json'):
 
-        user_id = Token.objects.get(user=request.user).user_id
+        # user_id = Token.objects.get(user=request.user).user_id
+        user_id = Token.objects.get(key=request.auth.key).user_id
         endDate = request.data.get("endDate", request.data["beginDate"])
         data = {
             'title': request.data['title'],
