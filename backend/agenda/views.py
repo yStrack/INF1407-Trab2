@@ -74,8 +74,8 @@ class EventDelete(APIView):
     '''
     Requisição GET para a retornar todos eventos de um User.
     '''
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     def get_object(self, id, owner):
         try:
             event = Event.objects.filter(id=id, owner=owner)
@@ -87,7 +87,8 @@ class EventDelete(APIView):
 
     def put(self, request, id, format=None):
         # Recuperando o evento desejado
-        user_id = Token.objects.get(user=request.user).user_id
+        # user_id = Token.objects.get(user=request.user).user_id
+        user_id = Token.objects.get(key=request.auth.key).user_id
         event = self.get_object(id, user_id)
         
         # Criando data com todos os campos
