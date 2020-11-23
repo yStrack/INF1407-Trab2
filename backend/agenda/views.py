@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from agenda.models import Event
+from django.http import Http404
 
 class UserCreate(APIView):
     """ 
@@ -74,25 +75,40 @@ class EventDelete(APIView):
     '''
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    def get_object(self, id):
+    def get_object(self, id, owner):
         try:
-            return Event.objects.filter(id=id)
+            event = Event.objects.filter(id=id, owner=owner)
+            if len(event) == 0 or len(event) > 1:
+                raise Event.DoesNotExist
+            return event.first()
         except Event.DoesNotExist:
             raise Http404
 
     def put(self, request, id, format=None):
-        events = self.get_object(id)
+        # Recuperando o evento desejado
         user_id = Token.objects.get(user=request.user).user_id
-        filter_event = events.filter(owner=user_id)
-        serializer = EventSerializer(filter_event, data=request.data)
+        event = self.get_object(id, user_id)
+        
+        # Criando data com todos os campos
+        endDate = request.data.get("endDate", request.data["beginDate"])
+        data = {
+            'title': request.data['title'],
+            'beginDate': request.data['beginDate'],
+            'endDate': endDate,
+            'owner': user_id
+        }
+
+        # Atualizando evento
+        serializer = EventSerializer(event, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        
+        # Em caso de erro
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, format='json'):
-        events = self.get_object(id)
         user_id = Token.objects.get(user=request.user).user_id
-        filter_event = events.filter(owner=user_id)
-        filter_event.delete()
+        event = self.get_object(id, user_id)
+        event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
