@@ -5,8 +5,8 @@ from django.conf import settings
 class Event(models.Model):
     title = models.CharField(null=False, max_length=300)
     beginDate = models.DateTimeField()
-    endDate = models.DateTimeField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    endDate = models.DateTimeField(blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
 
     @classmethod
     def create(cls, title, beginDate, endDate, owner):
