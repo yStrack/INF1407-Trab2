@@ -33,8 +33,8 @@ class EventCreate(APIView):
     '''
     Requisição POST para a criação de um evento.
     '''
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request, format='json'):
 
