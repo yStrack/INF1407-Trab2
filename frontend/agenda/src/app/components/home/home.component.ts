@@ -43,24 +43,33 @@ export class HomeComponent implements OnInit {
   }
 
   handleEventClick(arg: any): void {
-    const event = {
-      start: arg.event.start,
-      end: arg.event.end,
-      title: arg.event.title
-    };
-    // console.log('event click! ', event);
+    // console.log('event click! ', arg.event.id);
 
-    const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: event });
+    const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: arg.event });
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log(result);
       if (result !== undefined) {
         if (result.delete) {
-          arg.event.remove();
+          this.eventService.deleteEvent(arg.event.id).subscribe(e => {
+            arg.event.remove();
+          }, error => {
+            this.message.show('Erro ao tentar deletar evento', 'fechar', 'danger');
+          });
         } else {
-          arg.event.setProp('title', result.title);
-          arg.event.setStart(result.start);
-          arg.event.setEnd(result.end);
+          this.eventService.editEvent(
+            {
+              title: result.title,
+              beginDate: result.start,
+              endDate: result.end ? result.end : undefined,
+              id: arg.event.id
+            }).subscribe(e => {
+              arg.event.setProp('title', result.title);
+              arg.event.setStart(result.start);
+              arg.event.setEnd(result.end);
+            }, error => {
+              this.message.show('Erro ao tentar editar evento', 'fechar', 'danger');
+            });
         }
       }
     });
@@ -75,9 +84,27 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.eventService.getEvents().subscribe(events => {
+      // console.log('Lista', events);
+      const eventList: EventFront[] = events.map(e => {
+        return { start: e.beginDate, end: e.endDate, title: e.title, id: String(e.id) };
+      });
+      const apiCalendar = this.calendarComponent.getApi();
+      eventList.forEach(e => {
+        apiCalendar.addEvent(e);
+      });
+    });
   }
 
   logout(): void {
     this.app.logout();
   }
+}
+
+interface EventFront {
+  start: string;
+  end: string;
+  title: string;
+
+  id?: string;
 }

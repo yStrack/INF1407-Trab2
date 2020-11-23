@@ -11,12 +11,43 @@ export class EventService {
     }
 
     /**
+     * Get the list os events of the current user.
+     *
+     */
+    public getEvents(): Observable<Event[]> {
+        return this.http.get<Event[]>(
+            `${BASE_URL}/users/events/`
+        );
+    }
+
+
+    /**
      * Create an event with data provided.
      *
      */
     public createEvent(event: Event): Observable<Event> {
         return this.http.post<Event>(
             `${BASE_URL}/users/register-event/`, event
+        );
+    }
+
+    /**
+     * Edit an event with data provided.
+     *
+     */
+    public editEvent(event: Event): Observable<Event> {
+        return this.http.put<Event>(
+            `${BASE_URL}/users/events/${event.id}/`, event
+        );
+    }
+
+    /**
+     * Delete the event.
+     *
+     */
+    public deleteEvent(eventId: string): Observable<void> {
+        return this.http.delete<void>(
+            `${BASE_URL}/users/events/${eventId}`
         );
     }
 
