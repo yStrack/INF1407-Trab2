@@ -4,8 +4,6 @@ from rest_framework import status
 from agenda.serializers import UserSerializer, EventSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 from agenda.models import Event
 from django.http import Http404
 
