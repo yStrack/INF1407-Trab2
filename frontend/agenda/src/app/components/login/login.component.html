@@ -14,7 +14,7 @@
                 <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Senha</mat-label>
                     <input matInput [type]="hide.login ? 'password' : 'text'" formControlName="password" required>
-                    <button mat-icon-button matSuffix (click)="hide.login = !hide.login">
+                    <button mat-icon-button matSuffix (click)="hide.login = !hide.login" type="button">
                         <mat-icon>{{hide.login ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="userLogin.controls['password']?.invalid">
