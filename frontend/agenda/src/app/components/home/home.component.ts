@@ -31,9 +31,10 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogCreateEventComponent, { data: { start: arg.date } });
 
     dialogRef.afterClosed().subscribe(newEvent => {
-      // console.log(result);
       if (newEvent !== undefined) {
         this.eventService.createEvent({ title: newEvent.title, beginDate: newEvent.start, endDate: newEvent.end }).subscribe(e => {
+          newEvent.id = e.id;
+          // console.log(newEvent);
           this.calendarComponent.getApi().addEvent(newEvent);
         }, error => {
           this.message.show('Erro ao tentar criar evento', 'fechar', 'danger');
@@ -85,10 +86,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventService.getEvents().subscribe(events => {
-      // console.log('Lista', events);
       const eventList: EventFront[] = events.map(e => {
-        return { start: e.beginDate, end: e.endDate, title: e.title, id: String(e.id) };
+        return {
+          start: e.beginDate, end: e.endDate === e.beginDate ? undefined : e.endDate,
+          title: e.title, id: String(e.id), allDay: true
+        };
       });
+      // console.log('Lista', events, eventList);
       const apiCalendar = this.calendarComponent.getApi();
       eventList.forEach(e => {
         apiCalendar.addEvent(e);
@@ -103,8 +107,9 @@ export class HomeComponent implements OnInit {
 
 interface EventFront {
   start: string;
-  end: string;
+  end?: string;
   title: string;
 
   id?: string;
+  allDay: boolean;
 }
