@@ -10,7 +10,8 @@ export class MessageService {
 
     show(message: string, action: string, type: 'warn' | 'danger' | 'default' | 'success'): void {
         this.snackBar.open(message, action, {
-            panelClass: type
+            panelClass: type,
+            duration: 3000
         });
     }
 
