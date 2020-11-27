@@ -1,27 +1,39 @@
-<h1 mat-dialog-title>{{ editing ? 'Editar' : 'Criar' }} Evento</h1>
-<div mat-dialog-content>
-    <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Titulo</mat-label>
-        <input matInput type="text" [(ngModel)]="newEvent.title">
-    </mat-form-field>
-    <div class="flex-row">
-        <mat-form-field class="flex-1 mr-1" appearance="outline">
-            <mat-label>Inicio</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="newEvent.start">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+<form [formGroup]="newEvent" (ngSubmit)="save()">
+    <h1 mat-dialog-title>{{ editing ? 'Editar' : 'Criar' }} Evento</h1>
+    <div mat-dialog-content>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Titulo</mat-label>
+            <input matInput type="text" formControlName="title" required>
+            <mat-error *ngIf="newEvent.controls['title']?.invalid">
+                {{ getErrorMessage(newEvent,'title') }}
+            </mat-error>
         </mat-form-field>
-        <mat-form-field class="flex-1 ml-1" appearance="outline">
-            <mat-label>Fim</mat-label>
-            <input matInput [matDatepicker]="picker2" [(ngModel)]="newEvent.end">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
+        <div class="flex-row">
+            <mat-form-field class="flex-1 mr-1" appearance="outline">
+                <mat-label>Inicio</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="start" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="newEvent.controls['start']?.invalid">
+                    {{ getErrorMessage(newEvent,'start') }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-1 ml-1" appearance="outline">
+                <mat-label>Fim</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="end">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error *ngIf="newEvent.controls['end']?.invalid">
+                    {{ getErrorMessage(newEvent,'end') }}
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button (click)="close()">Cancelar</button>
-    <button *ngIf="editing" [mat-dialog-close]="{ delete: true }" mat-raised-button color="warn">Deletar</button>
-    <div class="flex-1"></div>
-    <button [mat-dialog-close]="newEvent" mat-raised-button color="primary">Ok</button>
-</div>
+    <div mat-dialog-actions>
+        <button mat-raised-button (click)="close()" type="button">Cancelar</button>
+        <button *ngIf="editing" [mat-dialog-close]="{ delete: true }" mat-raised-button color="warn"
+            type="button">Deletar</button>
+        <div class="flex-1"></div>
+        <button type="submit" mat-raised-button color="primary">Ok</button>
+    </div>
+</form>
