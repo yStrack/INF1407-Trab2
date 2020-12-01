@@ -69,7 +69,7 @@ export class DialogCreateEventComponent implements OnInit {
     if (form.hasError('required')) {
       return 'Campo obrigatório';
     } else if (form.hasError('date')) {
-      return 'Data de fim precisa ser menor que data de início';
+      return 'Data de fim precisa ser maior que data de início';
     } else {
       return '';
     }

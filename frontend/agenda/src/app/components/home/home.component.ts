@@ -32,7 +32,11 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(newEvent => {
       if (newEvent !== undefined) {
-        this.eventService.createEvent({ title: newEvent.title, beginDate: newEvent.start, endDate: newEvent.end }).subscribe(e => {
+        this.eventService.createEvent({
+          title: newEvent.title,
+          beginDate: newEvent.start,
+          endDate: newEvent.end ? newEvent.end : undefined
+        }).subscribe(e => {
           newEvent.id = e.id;
           // console.log(newEvent);
           this.calendarComponent.getApi().addEvent(newEvent);
